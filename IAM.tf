@@ -1,38 +1,4 @@
-# Security Groups
-resource "aws_security_group" "alb" {
-  name        = "${var.project_name}-alb-sg"
-  description = "Security group for Application Load Balancer"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "HTTP from anywhere"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTPS from anywhere"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name        = "${var.project_name}-alb-sg"
-    Environment = var.environment
-  }
-}
-
+# Security Groups (frontend, backend, jenkins only — ALB removed)
 resource "aws_security_group" "frontend" {
   name        = "${var.project_name}-frontend-sg"
   description = "Security group for frontend ECS tasks"
@@ -208,4 +174,4 @@ resource "aws_iam_policy" "ecs_task_logs" {
 resource "aws_iam_role_policy_attachment" "ecs_task_logs" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = aws_iam_policy.ecs_task_logs.arn
-} 
+}

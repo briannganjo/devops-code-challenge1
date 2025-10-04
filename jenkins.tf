@@ -18,7 +18,7 @@ data "aws_ami" "amazon_linux_2023" {
 resource "aws_instance" "jenkins_master" {
   ami           = data.aws_ami.amazon_linux_2023.id
   instance_type = "t3.small"
-  key_name      = "1PU"
+  key_name      = "1PUkp"
 
   vpc_security_group_ids = [aws_security_group.jenkins.id]
   subnet_id              = aws_subnet.public[0].id
@@ -45,4 +45,4 @@ resource "aws_eip" "jenkins_master" {
     Name        = "${var.project_name}-jenkins-master-eip"
     Environment = var.environment
   }
-} 
+}

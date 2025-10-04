@@ -34,7 +34,7 @@ variable "frontend_cpu" {
 variable "frontend_image" {
   description = "Docker image for the frontend service"
   type        = string
-  default   = ""
+  default     = ""
 }
 
 variable "frontend_port" {
@@ -58,7 +58,7 @@ variable "backend_memory" {
 variable "backend_image" {
   description = "Docker image for the backend service"
   type        = string
-  default    = ""
+  default     = ""
 }
 variable "backend_port" {
   description = "Port for the backend service"

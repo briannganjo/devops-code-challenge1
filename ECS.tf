@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "frontend" {
     {
       name  = "frontend"
       image = var.frontend_image != "" ? var.frontend_image : "${aws_ecr_repository.frontend.repository_url}:latest"
-      
+
       portMappings = [
         {
           containerPort = var.frontend_port
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "backend" {
     {
       name  = "backend"
       image = var.backend_image != "" ? var.backend_image : "${aws_ecr_repository.backend.repository_url}:latest"
-      
+
       portMappings = [
         {
           containerPort = var.backend_port
