@@ -62,8 +62,8 @@ pipeline {
                     script {
                         sh '''
                             echo "🔁 Updating ECS services with new images..."
-                            aws ecs update-service --cluster techchallenge1-cluster --service frontend-service --force-new-deployment --region $AWS_REGION
-                            aws ecs update-service --cluster techchallenge1-cluster --service backend-service --force-new-deployment --region $AWS_REGION
+                            aws ecs update-service --cluster techchallenge1-cluster --service techchallenge1-frontend-service --force-new-deployment --region $AWS_REGION
+                            aws ecs update-service --cluster techchallenge1-cluster --service techchallenge1-backend-service --force-new-deployment --region $AWS_REGION
                         '''
                     }
                 }
