@@ -1,3 +1,3 @@
 module.exports = {
-	CORS_ORIGIN: 'http://3.213.94.214:3000'
+	CORS_ORIGIN: 'techchallenge1-alb-985619416.us-east-1.elb.amazonaws.com'
 }

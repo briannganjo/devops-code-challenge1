@@ -1,2 +1,2 @@
-export const API_URL = 'http://3.213.94.214:8080';
+export const API_URL = 'techchallenge1-alb-985619416.us-east-1.elb.amazonaws.com';
 export default API_URL;
