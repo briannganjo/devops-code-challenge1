@@ -2,12 +2,10 @@ pipeline {
     agent any
 
     environment {
-        // ====> Replace with your AWS region, e.g., 'us-east-1'
-        AWS_REGION = 'your-aws-region'
+        AWS_REGION = 'us-east-1'
 
-        // ====> Replace with your own ECR repository URIs
-        FRONTEND_REPO = 'your-frontend-ecr-repo-uri'
-        BACKEND_REPO  = 'your-backend-ecr-repo-uri'
+        FRONTEND_REPO = '533267393079.dkr.ecr.us-east-1.amazonaws.com/techchallenge1-frontend'
+        BACKEND_REPO  = '533267393079.dkr.ecr.us-east-1.amazonaws.com/techchallenge1-backend'
     }
 
     stages {
@@ -26,27 +24,30 @@ pipeline {
             }
         }
 
+        // 🔐 Authenticate Jenkins to AWS ECR
         stage('Authenticate to ECR') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'your-aws-credentials-id']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'brian2']]) {
                     script {
                         sh '''
-                            aws --version
-                            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $FRONTEND_REPO
-                            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $BACKEND_REPO
+                            echo "🔐 Authenticating to ECR..."
+                            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 533267393079.dkr.ecr.us-east-1.amazonaws.com
                         '''
                     }
                 }
             }
         }
 
+        // 🏷️ Tag and push images to ECR
         stage('Tag and Push images to ECR') {
             steps {
                 script {
                     sh '''
+                        echo "🏷️ Tagging Docker images..."
                         docker tag frontend:latest $FRONTEND_REPO:latest
                         docker tag backend:latest $BACKEND_REPO:latest
 
+                        echo "🚀 Pushing Docker images to ECR..."
                         docker push $FRONTEND_REPO:latest
                         docker push $BACKEND_REPO:latest
                     '''
@@ -54,13 +55,15 @@ pipeline {
             }
         }
 
+        // 🔁 Update ECS services (replace with your ECS cluster/service names)
         stage('Update ECS services') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'your-aws-credentials-id']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
                     script {
                         sh '''
-                            aws ecs update-service --cluster your-ecs-cluster-name --service your-frontend-service-name --force-new-deployment --region $AWS_REGION
-                            aws ecs update-service --cluster your-ecs-cluster-name --service your-backend-service-name --force-new-deployment --region $AWS_REGION
+                            echo "🔁 Updating ECS services with new images..."
+                            aws ecs update-service --cluster techchallenge1-cluster --service frontend-service --force-new-deployment --region $AWS_REGION
+                            aws ecs update-service --cluster techchallenge1-cluster --service backend-service --force-new-deployment --region $AWS_REGION
                         '''
                     }
                 }
