@@ -58,7 +58,7 @@ pipeline {
         // 🔁 Update ECS services (replace with your ECS cluster/service names)
         stage('Update ECS services') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'brian2']]) {
                     script {
                         sh '''
                             echo "🔁 Updating ECS services with new images..."
